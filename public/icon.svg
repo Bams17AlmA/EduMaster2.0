@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+  </defs>
+  <!-- Background with rounded squircle -->
+  <rect width="512" height="512" rx="112" fill="url(#grad)" />
+  <!-- Inner circular badge -->
+  <circle cx="256" cy="256" r="210" fill="none" stroke="url(#gold)" stroke-width="6" opacity="0.4" stroke-dasharray="8 6" />
+  
+  <!-- Graduation Cap -->
+  <path d="M256 120 L390 185 L256 250 L122 185 Z" fill="url(#gold)" />
+  <path d="M170 212 L170 270 Q256 320 342 270 L342 212 Q256 260 170 212 Z" fill="#ffffff" opacity="0.95" />
+  <circle cx="390" cy="185" r="7" fill="#fbbf24" />
+  <path d="M390 185 L405 260 L385 275 L385 260" fill="none" stroke="#fbbf24" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Open Book -->
+  <path d="M140 330 Q256 310 256 360 Q256 310 372 330 L372 410 Q256 390 256 440 Q256 390 140 410 Z" fill="#ffffff" />
+  <path d="M256 360 L256 440" stroke="#1e3a8a" stroke-width="4" stroke-linecap="round" />
+  <path d="M165 350 Q215 342 245 356 M165 372 Q215 364 245 378 M165 394 Q215 386 245 400" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
+  <path d="M347 350 Q297 342 267 356 M347 372 Q297 364 267 378 M347 394 Q297 386 267 400" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Star accents -->
+  <polygon points="256,70 262,86 279,87 266,98 270,114 256,104 242,114 246,98 233,87 250,86" fill="#fbbf24" />
+</svg>

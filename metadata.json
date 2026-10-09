@@ -1,0 +1,6 @@
+{
+  "name": "EduGest - Plateforme Intégrale de Gestion Scolaire",
+  "description": "Système complet de gestion scolaire : élèves, inscriptions, réinscriptions, classes, enseignants, affectations, frais scolaires, paiements partiels, reçus, bulletins périodiques et bulletins blancs, statistiques et mode PWA / offline.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
