@@ -1,14 +1,18 @@
 {
-  "name": "react-example",
+  "name": "edumaster-2-desktop",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.0.0",
+  "productName": "EduMaster 2.0",
   "type": "module",
+  "main": "desktop/main.cjs",
   "scripts": {
-    "dev": "vite --port=3000 --host=0.0.0.0",
+    "dev": "vite --port=3000 --host=127.0.0.1",
     "build": "vite build",
     "preview": "vite preview",
-    "clean": "rm -rf dist server.js",
-    "lint": "tsc --noEmit"
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "lint": "tsc --noEmit",
+    "electron:dev": "concurrently -k \"vite --host 127.0.0.1 --port 3000\" \"wait-on http://127.0.0.1:3000 && electron .\"",
+    "dist:win": "npm run build && electron-builder --win nsis portable"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
@@ -30,10 +34,50 @@
     "@types/react-dom": "^19.3.0",
     "@types/sql.js": "^1.4.11",
     "autoprefixer": "^10.4.21",
+    "concurrently": "^9.2.1",
+    "electron": "^40.0.0",
+    "electron-builder": "^26.0.12",
     "esbuild": "^0.25.0",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.21.0",
     "typescript": "^7.0.2",
-    "vite-plugin-pwa": "^2.0.0"
+    "vite-plugin-pwa": "^2.0.0",
+    "wait-on": "^8.0.3"
+  },
+  "build": {
+    "appId": "cd.edumaster.school",
+    "productName": "EduMaster 2.0",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "desktop/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "node_modules/sql.js/dist/sql-wasm.wasm",
+        "to": "sql-wasm.wasm"
+      }
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "artifactName": "EduMaster-2-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "EduMaster-2-Portable-${version}.${ext}"
+    }
   }
 }
