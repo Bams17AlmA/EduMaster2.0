@@ -31,15 +31,46 @@ export default function App() {
   const [printMode, setPrintMode] = useState<PrintMode | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
     const handleNavToSqlite = () => setCurrentView('sqlite');
     window.addEventListener('nav-to-sqlite', handleNavToSqlite);
-    return () => window.removeEventListener('nav-to-sqlite', handleNavToSqlite);
+
+    // In the Windows desktop build, SQLite is the durable source of truth.
+    // Keep localStorage as a browser/PWA fallback for the existing web version.
+    const hydrateDesktopDatabase = async () => {
+      if (!window.eduMasterDesktop) return;
+      try {
+        const persisted = await window.eduMasterDesktop.loadDatabase();
+        if (cancelled) return;
+        if (persisted && typeof persisted === 'object') {
+          const restored = persisted as AppDatabase;
+          setDb(restored);
+          saveDatabase(restored);
+        } else {
+          await window.eduMasterDesktop.saveDatabase(loadDatabase());
+        }
+      } catch (error) {
+        console.error('Impossible de charger la base SQLite locale :', error);
+      }
+    };
+    void hydrateDesktopDatabase();
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('nav-to-sqlite', handleNavToSqlite);
+    };
   }, []);
 
-  // Sync to localStorage on update
+  // Browser/PWA storage remains available; desktop builds also persist to SQLite.
   const handleUpdateDb = (updated: AppDatabase) => {
     setDb(updated);
     saveDatabase(updated);
+    if (window.eduMasterDesktop) {
+      void window.eduMasterDesktop.saveDatabase(updated).catch((error) => {
+        console.error('Échec de sauvegarde dans SQLite :', error);
+        window.alert('Attention : les modifications ne sont pas confirmées dans la base SQLite locale. Veuillez réessayer et vérifier les sauvegardes.');
+      });
+    }
   };
 
   // Quick print handlers
