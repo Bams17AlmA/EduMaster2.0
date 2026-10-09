@@ -1,0 +1,45 @@
+name: Build EduMaster Windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - feature/windows-offline-sqlite
+    paths:
+      - 'src/**'
+      - 'desktop/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vite.config.ts'
+      - '.github/workflows/build-windows.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm install
+      - name: Build web application
+        run: npm run build
+      - name: Package Windows installer
+        run: npm run dist:win
+      - name: Upload installer and portable EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: EduMaster-Windows
+          path: |
+            release/*.exe
+            release/*.blockmap
+          if-no-files-found: error
+          retention-days: 14
